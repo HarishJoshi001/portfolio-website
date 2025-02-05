@@ -19,11 +19,39 @@ window.addEventListener('scroll', function() {
 });
 
 // Form submission
+// Form submission with Formspree
 document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    // Add your form submission logic here
-    alert('Thank you for your message! I will get back to you soon.');
-    this.reset();
+    
+    // Get Formspree endpoint from form action
+    const formAction = this.action;
+    
+    // Collect form data
+    const formData = new FormData(this);
+
+    // Send request
+    fetch(formAction, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Thank you for your message! I will respond shortly.');
+            this.reset();
+        } else {
+            response.json().then(data => {
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                }
+            });
+        }
+    })
+    .catch(error => {
+        alert('Oops! There was a problem sending your message.');
+    });
 });
 
 // Mobile menu toggle (you can add this if you want mobile menu)
