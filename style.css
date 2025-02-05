@@ -109,6 +109,118 @@ body {
     background-color: var(--secondary-color);
 }
 
+/* Add to your existing CSS */
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-cv {
+    background-color: var(--dark-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-cv:hover {
+    background-color: #1a252f;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .hero-buttons .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.hero h1 {
+    animation: fadeInUp 1s ease-out forwards;
+    opacity: 0;
+}
+
+.hero p {
+    animation: fadeIn 1s ease-out forwards 0.5s;
+    opacity: 0;
+}
+
+.hero-buttons {
+    animation: fadeInUp 1s ease-out forwards 0.8s;
+    opacity: 0;
+}
+
+/* Add hover effect to text */
+.hero h1 span {
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s;
+}
+
+.hero h1 span:hover {
+    color: var(--secondary-color);
+}
+
+.hero h1 span::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.hero h1 span:hover::after {
+    transform: scaleX(1);
+}
+
+/* Button hover animation */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
 /* About Section */
 .about {
     padding: 5rem 0;
