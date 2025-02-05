@@ -18,6 +18,32 @@ window.addEventListener('scroll', function() {
     }
 });
 
+// Add this to handle animation refresh
+function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
+
+function handleScrollAnimations() {
+    const elements = document.querySelectorAll('.hero h1, .hero p, .hero-buttons');
+    elements.forEach(el => {
+        if (isElementInViewport(el)) {
+            el.style.animationPlayState = 'running';
+        }
+    });
+}
+
+// Initial check
+handleScrollAnimations();
+
+// Check on scroll
+window.addEventListener('scroll', handleScrollAnimations);
+
 // Form submission
 // Form submission with Formspree
 document.getElementById('contact-form').addEventListener('submit', function(e) {
