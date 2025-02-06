@@ -237,8 +237,7 @@ body {
 }
 
 .about-text p {
-  margin-top: -80px; /* Moves the text slightly up */
-  margin-bottom: 80px; /* Adds space between text and skills */
+  margin-bottom: 70px; /* Adds space between text and skills */
 }
 
 .about-image img {
