@@ -30,15 +30,32 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Sticky navigation
-window.addEventListener('scroll', function() {
+// Sticky navigation (throttled with requestAnimationFrame)
+(function() {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+    let lastScrollY = 0;
+    let ticking = false;
+
+    function updateNavbar() {
+        if (!navbar) return;
+        if (lastScrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+        ticking = false;
     }
-});
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        if (!ticking) {
+            window.requestAnimationFrame(updateNavbar);
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // run once on load
+    lastScrollY = window.scrollY;
+    updateNavbar();
+})();
 
 // Theme Toggle
 const themeToggle = document.getElementById('theme-toggle');
@@ -131,28 +148,23 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// for projects animation
-// Function to check if an element is in the viewport
-function isElementInViewport(el) {
-    const rect = el.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
+// Projects animation: use IntersectionObserver (more efficient than per-scroll layout checks)
+(function() {
+    const cards = document.querySelectorAll('.project-card');
+    if (!('IntersectionObserver' in window) || cards.length === 0) {
+        // Fallback: reveal all
+        cards.forEach(c => c.classList.add('show'));
+        return;
+    }
 
-// Function to apply animation when elements are in view
-function animateProjectCards() {
-    const cards = document.querySelectorAll(".project-card");
-    cards.forEach(card => {
-        if (isElementInViewport(card)) {
-            card.classList.add("show");
-        }
-    });
-}
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
 
-// Run animation check on scroll and on load
-window.addEventListener("scroll", animateProjectCards);
-window.addEventListener("load", animateProjectCards);
+    cards.forEach(card => observer.observe(card));
+})();
