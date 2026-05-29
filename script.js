@@ -1,10 +1,32 @@
+// Mobile menu toggle
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.querySelector('.nav-links');
+
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+}
+
+// Close mobile menu when a link is clicked
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('active');
+  });
+});
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
     });
 });
 
@@ -18,36 +40,41 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Add this to handle animation refresh
-function isElementInViewport(el) {
-    const rect = el.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
+// Theme Toggle
+const themeToggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+const darkModePreference = localStorage.getItem('darkMode');
+
+// Check system preference or stored preference
+if (darkModePreference === 'enabled' || (!darkModePreference && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.classList.add('dark-mode');
+    updateThemeIcon();
 }
 
-function handleScrollAnimations() {
-    const elements = document.querySelectorAll('.hero h1, .hero p, .hero-buttons');
-    elements.forEach(el => {
-        if (isElementInViewport(el)) {
-            el.style.animationPlayState = 'running';
-        }
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        updateThemeIcon();
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
     });
 }
 
-// Initial check
-handleScrollAnimations();
+function updateThemeIcon() {
+    const icon = themeToggle.querySelector('i');
+    if (document.body.classList.contains('dark-mode')) {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+    } else {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+}
 
-// Check on scroll
-window.addEventListener('scroll', handleScrollAnimations);
-
-// Form submission
 // Form submission with Formspree
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
     
     // Get Formspree endpoint from form action
     const formAction = this.action;
@@ -78,48 +105,7 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
     .catch(error => {
         alert('Oops! There was a problem sending your message.');
     });
-});
-
-// Mobile menu toggle (you can add this if you want mobile menu)
-// const menuToggle = document.querySelector('.menu-toggle');
-// const navLinks = document.querySelector('.nav-links');
-
-// menuToggle.addEventListener('click', () => {
-//     navLinks.classList.toggle('active');
-// });
-
-
-// Dark Mode Toggle
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
-
-// Check for saved theme in localStorage
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-    body.classList.add(savedTheme);
-    updateToggleIcon();
-}
-
-// Toggle Dark Mode
-themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    updateToggleIcon();
-    
-    // Save theme preference to localStorage
-    if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark-mode');
-    } else {
-        localStorage.removeItem('theme');
-    }
-});
-
-// Update Toggle Icon
-function updateToggleIcon() {
-    if (body.classList.contains('dark-mode')) {
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>'; // Sun icon for light mode
-    } else {
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; // Moon icon for dark mode
-    }
+    });
 }
 
 /*for skills animation */

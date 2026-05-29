@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -22,18 +22,27 @@
     <!-- Navigation -->
     <nav class="navbar">
       <div class="container">
-        <a href="#" class="logo">Welcome</a>
+        <a href="#" class="logo">HJ</a>
         <ul class="nav-links">
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <!-- Add this button -->
-        <button id="theme-toggle" class="theme-toggle">
-          <i class="fas fa-sun"></i>
-          <!-- Moon icon for dark mode -->
-        </button>
+        <div class="nav-actions">
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Toggle dark mode"
+          >
+            <i class="fas fa-sun"></i>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </nav>
 
@@ -41,13 +50,14 @@
     <section id="home" class="hero">
       <div class="container">
         <div class="hero-content">
-          <h1>Hi, I'm <span>Harish Joshi</span></h1>
-          <p>Student & Human</p>
-          <a href="#contact" class="btn">Get in Touch</a>
-          <a href="cv.pdf" class="btn btn-cv" target="_blank">
-            View CV
-            <i class="fas fa-file-alt"></i>
-          </a>
+          <h1>Hi, I'm <span>Harish</span></h1>
+          <p class="subtitle">Programmer • Problem Solver • Lifelong Learner</p>
+          <div class="hero-buttons">
+            <a href="#contact" class="btn btn-primary">Get in Touch</a>
+            <a href="cv.pdf" class="btn btn-secondary" target="_blank">
+              <i class="fas fa-file-alt"></i> View CV
+            </a>
+          </div>
         </div>
       </div>
     </section>
